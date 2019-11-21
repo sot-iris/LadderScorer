@@ -66,6 +66,7 @@ class LadderAnalysis:
                 editedYAML = yaml.load(f, Loader=yaml.FullLoader)
             except yaml.YAMLError as exc:
                 print(exc)
+        editedYAML['iteration'] = 2
         if croppingParams:
             x1, x2, y1, y2 = croppingParams
             editedYAML['cropping'] = True
