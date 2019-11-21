@@ -8,6 +8,7 @@ import cv2
 import os
 import numpy as np
 import pandas as pd
+import subprocess as sp
 import matplotlib.pyplot as plt
 
 class LadderAnalysis:
@@ -85,7 +86,7 @@ class LadderAnalysis:
             os.environ["Colab"]="True"
             deeplabcut.analyze_videos(self.config_path, [self.filename], videotype=self.videoType, save_as_csv=True, shuffle=1)
         except ImportError:
-            !pip install deeplabcut
+            sp.call(['pip', 'install', 'deeplabcut'])
             print("DeepLabCut (DLC) has been installed -- restart runtime to correctly load dependencies for DLC-Pose-Estimation")
 
     def checkLabels(self):
@@ -95,7 +96,7 @@ class LadderAnalysis:
             os.environ["Colab"]="True"
             deeplabcut.create_labeled_video(self.config_path, [self.filename])
         except ImportError:
-            !pip install deeplabcut
+            sp.call(['pip', 'install', 'deeplabcut'])
             print("DeepLabCut (DLC) has been installed -- restart runtime to correctly load dependencies for DLC-Pose-Estimation")
 
     def get_csv_filename(self):
