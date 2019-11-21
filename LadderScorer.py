@@ -81,9 +81,9 @@ class LadderAnalysis:
 
     def analyseVideo(self):
         try:
-            import deeplabcut
             os.environ["DLClight"]="True"
             os.environ["Colab"]="True"
+            import deeplabcut
             deeplabcut.analyze_videos(self.config_path, [self.filename], videotype=self.videoType, save_as_csv=True, shuffle=1)
         except ImportError:
             sp.call(['pip', 'install', 'deeplabcut'])
@@ -91,9 +91,9 @@ class LadderAnalysis:
 
     def checkLabels(self):
         try:
-            import deeplabcut
             os.environ["DLClight"]="True"
             os.environ["Colab"]="True"
+            import deeplabcut
             deeplabcut.create_labeled_video(self.config_path, [self.filename])
         except ImportError:
             sp.call(['pip', 'install', 'deeplabcut'])
