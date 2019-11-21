@@ -74,7 +74,7 @@ class LadderAnalysis:
             editedYAML['x2'] = x2
             editedYAML['y1'] = y1
             editedYAML['y2'] = y2
-            with open(config_path, "w") as f:
+            with open(self.config_path, "w") as f:
                 yaml.dump(editedYAML, f)
             return editedYAML
         else:
