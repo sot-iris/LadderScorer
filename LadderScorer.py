@@ -11,6 +11,15 @@ import pandas as pd
 import subprocess as sp
 import matplotlib.pyplot as plt
 
+try:
+    os.environ["DLClight"]="True"
+    os.environ["Colab"]="True"
+    import deeplabcut
+except ImportError:
+    sp.call(['pip', 'install', 'deeplabcut'])
+    print("DeepLabCut (DLC) has been installed -- restart runtime to correctly load dependencies for DLC-Pose-Estimation, including the correct version of PyYaml")
+
+
 class LadderAnalysis:
     def __init__(self, config_path=None, ID=None, full_vid_filename=None, snapshot=None, FPS=30, cropping=False, videofileType='.mp4'):
         self.config_path = config_path
@@ -81,31 +90,17 @@ class LadderAnalysis:
             return editedYAML
 
     def analyseVideo(self):
-        try:
-            os.environ["DLClight"]="True"
-            os.environ["Colab"]="True"
-            import deeplabcut
             deeplabcut.analyze_videos(self.config_path, [self.filename], videotype=self.videoType, save_as_csv=True, shuffle=1)
-        except ImportError:
-            sp.call(['pip', 'install', 'deeplabcut'])
-            print("DeepLabCut (DLC) has been installed -- restart runtime to correctly load dependencies for DLC-Pose-Estimation")
 
     def checkLabels(self):
-        try:
-            os.environ["DLClight"]="True"
-            os.environ["Colab"]="True"
-            import deeplabcut
             deeplabcut.create_labeled_video(self.config_path, [self.filename])
-        except ImportError:
-            sp.call(['pip', 'install', 'deeplabcut'])
-            print("DeepLabCut (DLC) has been installed -- restart runtime to correctly load dependencies for DLC-Pose-Estimation")
 
     def get_csv_filename(self):
         directory = os.fsencode(self.getBasedir())
         for file in os.listdir(directory):
             filename_ = os.fsdecode(file)
             if filename_.endswith(".csv"):
-                if animal.filename.split(".mp4")[0].split(r"/")[-1] in filename_:
+                if self.filename.split(".mp4")[0].split(r"/")[-1] in filename_:
                     return "{}{}".format(self.getBasedir(), filename_)
         return "No CSV for this video; try running analyseVideo()."
 
