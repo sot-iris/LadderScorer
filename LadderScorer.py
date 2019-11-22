@@ -167,7 +167,7 @@ class LadderAnalysis:
         val = 0
         first = True
         up = False
-        for i in nose.Smoothed:
+        for i in nose:
             val += 1
             changes.append(i)
             if i == 1:
@@ -187,7 +187,8 @@ class LadderAnalysis:
             run_lengths.append(int(latency / FPS))
         return slices, run_lengths
 
-    def best_fit_slope_and_intercept(self, xs, ys): #returns the gradient and y intercept of the line of best fit through a set of coordinates
+    def best_fit_slope_and_intercept(self, xs, ys): #courtesy of Sentdex
+        #returns the gradient and y intercept of the line of best fit through a set of coordinates
         m = (((mean(xs) * mean(ys)) - mean(xs * ys)) /
            ((mean(xs) * mean(xs)) - mean(xs * xs)))
 
@@ -209,6 +210,14 @@ class LadderAnalysis:
         m, b = self.best_fit_slope_and_intercept(np.array(fit_x), np.array(fit_y))
         return m, b
 
+    def plot_rungs(self):
+        firstFrame = self.get_first_frame()
+        h, w = self.video_shape()[1:]
+        m, c = self.get_nose_line_equation()
+        #y = mx + c
+        cv2.line(firstFrame, (0, c), (w, w*m + c), (0, 0, 255), 9)
+        plt.imshow(firstFrame)
+
     def clean_slices(self): #get rid of any runs that register as under 4 seconds in length
         slices = self.slices_and_runs()[0]
         unit = 0
@@ -223,6 +232,12 @@ class LadderAnalysis:
             if i != 'n':
                 new_slices.append(i)
         return new_slices
+
+    def instancesBelowRungs(self):
+        pass
+
+    def cumulativeError(self):
+        pass
 
     def distanceFromRungs(self):
         pass
