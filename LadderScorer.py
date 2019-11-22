@@ -214,7 +214,7 @@ class LadderAnalysis:
         h, w = self.video_shape()[1:]
         m, c = self.get_nose_line_equation()
         #y = mx + c
-        cv2.line(firstFrame[0], (0, c), (w, w*m + c), (0, 0, 255), 9)
+        cv2.line(firstFrame[0], (0, int(c)), (int(w, w*m + c)), (0, 0, 255), 9)
         plt.imshow(firstFrame[0])
 
     def clean_slices(self): #get rid of any runs that register as under 4 seconds in length
