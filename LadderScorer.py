@@ -210,12 +210,18 @@ class LadderAnalysis:
         return m, b
 
     def plot_rungs(self):
+        with open(self.config_path, 'r') as f:
+            try:
+                editedYAML = yaml.load(f, Loader=yaml.FullLoader)
+            except yaml.YAMLError as exc:
+                print(exc)
         firstFrame = self.get_first_frame()
         h, w = self.video_shape()[1:]
         m, c = self.get_nose_line_equation()
         #y = mx + c
-        cv2.line(firstFrame[0], (0, int(c)), (int(w), int(w*m + c)), (0, 0, 255), 9)
-        plt.imshow(firstFrame[0])
+        img = firstFrame[0][0,int(w),int(editedYAML['y1']),int(editedYAML['y2'])]
+        cv2.line(img, (0, int(c)), (int(w), int(w*m + c)), (0, 0, 255), 9)
+        plt.imshow(img)
 
     def clean_slices(self): #get rid of any runs that register as under 4 seconds in length
         slices = self.slices_and_runs()[0]
