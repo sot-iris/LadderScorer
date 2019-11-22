@@ -49,7 +49,7 @@ class LadderAnalysis:
         while cap.isOpened():
             ret, frame = cap.read()
             if ret:
-                img_gray = cv2.cvtColor(frame, cv2.COLOR_RGB2GRAY)
+                img_gray = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
                 firstFrame.append(img_gray)
                 break
         cap.release()
@@ -62,7 +62,7 @@ class LadderAnalysis:
         firstFrame = self.get_first_frame()
         if cropCheck:
             x1, x2, y1, y2 = cropCheck
-            plt.figure(figsize = (40, 10))
+            plt.figure(figsize = (20, 5))
             plt.imshow(firstFrame[0][y1: y2, x1: x2])
         else:
             h,w = self.video_shape()[1:]
@@ -219,8 +219,9 @@ class LadderAnalysis:
         h, w = self.video_shape()[1:]
         m, c = self.get_nose_line_equation()
         #y = mx + c
-        img = firstFrame[0][0,int(w),int(editedYAML['y1']),int(editedYAML['y2'])]
-        cv2.line(img, (0, int(c)), (int(w), int(w*m + c)), (0, 0, 255), 9)
+        img = firstFrame[0][int(editedYAML['y1']):int(editedYAML['y2']), 0:int(w)]
+        cv2.line(img, (0, int(c)), (int(w), int(w*m + c)), (0, 255, 0), 9)
+        plt.figure(figsize = (20, 5))
         plt.imshow(img)
 
     def clean_slices(self): #get rid of any runs that register as under 4 seconds in length
