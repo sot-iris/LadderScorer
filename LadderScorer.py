@@ -54,7 +54,6 @@ class LadderAnalysis:
                 break
         cap.release()
         if show:
-
             return firstFrame
         else:
             return firstFrame
@@ -215,8 +214,8 @@ class LadderAnalysis:
         h, w = self.video_shape()[1:]
         m, c = self.get_nose_line_equation()
         #y = mx + c
-        cv2.line(firstFrame, (0, c), (w, w*m + c), (0, 0, 255), 9)
-        plt.imshow(firstFrame)
+        cv2.line(firstFrame[0], (0, c), (w, w*m + c), (0, 0, 255), 9)
+        plt.imshow(firstFrame[0])
 
     def clean_slices(self): #get rid of any runs that register as under 4 seconds in length
         slices = self.slices_and_runs()[0]
