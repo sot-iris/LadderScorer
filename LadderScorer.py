@@ -239,14 +239,28 @@ class LadderAnalysis:
                 new_slices.append(i)
         return new_slices
 
-    def instancesBelowRungs(self):
-        pass
+    def instancesBelowRungs(self, limb="BackLeft", pcutoff=0.9):
+        if limb not in self.limbs:
+            return "This isn't a feature... typo?"
+        else:
+            print("Results for {} limb."format(limb))
+            new = self.clean_data()
+            slices = self.slices_and_runs()[0]
+            run_v = 0
+            traversal = 1
+            results = {}
+            for run in range(int(len(slices) / 2)):
+                limb_x = []
+                limb_y = []
+                for i in range(slices[run_v], slices[run_v + 1]):
+                    if new.iloc[i].astype("float")["{}_likelihood".format(limb)] > pcutoff:
+                        limb_x.append(new.iloc[i].astype('float')["{}_x".format(limb)])
+                        limb_y.append(new.iloc[i].astype('float')["{}_y".format(limb)])
+                results[traversal] = len(limb_x)
+                traversal += 1
+                run_v += 2
+            return results
+
 
     def cumulativeError(self):
-        pass
-
-    def distanceFromRungs(self):
-        pass
-
-    def distanceFromMidpoint(self):
         pass
