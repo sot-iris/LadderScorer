@@ -259,7 +259,7 @@ class LadderAnalysis:
                     if new.iloc[i].astype("float")["{}_likelihood".format(limb)] > pcutoff:
                         y = new.iloc[i].astype('float')["{}_y".format(limb)]
                         x = new.iloc[i].astype('float')["{}_x".format(limb)]
-                        if y > m*x + c: #if the value of y falls below the rung line, then add to the list
+                        if y < m*x + c: #if the value of y falls below the rung line, then add to the list
                             limb_x.append()
                             limb_y.append()
                 if plot:
