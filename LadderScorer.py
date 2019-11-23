@@ -251,14 +251,19 @@ class LadderAnalysis:
             run_v = 0
             traversal = 1
             results = {}
+            m, c = self.get_nose_line_equation()
             for run in range(int(len(slices) / 2)):
                 limb_x = []
                 limb_y = []
                 for i in range(slices[run_v], slices[run_v + 1]):
                     if new.iloc[i].astype("float")["{}_likelihood".format(limb)] > pcutoff:
-                        limb_x.append(new.iloc[i].astype('float')["{}_x".format(limb)])
-                        limb_y.append(new.iloc[i].astype('float')["{}_y".format(limb)])
-                self.plot_rungs(limb_x, limb_y)
+                        y = new.iloc[i].astype('float')["{}_y".format(limb)]
+                        x = new.iloc[i].astype('float')["{}_x".format(limb)]
+                        if y > m*x + c: #if the value of y falls below the rung line, then add to the list
+                            limb_x.append()
+                            limb_y.append()
+                if plot:
+                    self.plot_rungs(limb_x, limb_y)
                 results[traversal] = len(limb_x)
                 traversal += 1
                 run_v += 2
