@@ -209,7 +209,7 @@ class LadderAnalysis:
         m, b = self.best_fit_slope_and_intercept(np.array(fit_x), np.array(fit_y))
         return m, b
 
-    def plot_rungs(self):
+    def plot_rungs(self, x=None, y=None):
         with open(self.config_path, 'r') as f:
             try:
                 editedYAML = yaml.load(f, Loader=yaml.FullLoader)
@@ -221,6 +221,8 @@ class LadderAnalysis:
         #y = mx + c
         img = firstFrame[0][int(editedYAML['y1']):int(editedYAML['y2']), 0:int(w)]
         cv2.line(img, (0, int(c)), (int(w), int(w*m + c)), (0, 255, 0), 9)
+        if x and y:
+            plt.scatter(x, y, marker="o")
         plt.figure(figsize = (20, 5))
         plt.imshow(img)
 
@@ -239,11 +241,11 @@ class LadderAnalysis:
                 new_slices.append(i)
         return new_slices
 
-    def instancesBelowRungs(self, limb="BackLeft", pcutoff=0.9):
+    def instancesBelowRungs(self, limb="BackLeft", pcutoff=0.9, plot=False):
         if limb not in self.limbs:
             return "This isn't a feature... typo?"
         else:
-            print("Results for {} limb."format(limb))
+            print("Results for {} limb.".format(limb))
             new = self.clean_data()
             slices = self.slices_and_runs()[0]
             run_v = 0
@@ -256,6 +258,7 @@ class LadderAnalysis:
                     if new.iloc[i].astype("float")["{}_likelihood".format(limb)] > pcutoff:
                         limb_x.append(new.iloc[i].astype('float')["{}_x".format(limb)])
                         limb_y.append(new.iloc[i].astype('float')["{}_y".format(limb)])
+                self.plot_rungs(limb_x, limb_y)
                 results[traversal] = len(limb_x)
                 traversal += 1
                 run_v += 2
