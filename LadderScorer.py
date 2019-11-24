@@ -89,10 +89,10 @@ class LadderAnalysis:
             return editedYAML
 
     def analyseVideo(self):
-            deeplabcut.analyze_videos(self.config_path, [self.filename], videotype=self.videoType, save_as_csv=True, shuffle=1)
+        deeplabcut.analyze_videos(self.config_path, [self.filename], videotype=self.videoType, save_as_csv=True, shuffle=1)
 
     def checkLabels(self):
-            deeplabcut.create_labeled_video(self.config_path, [self.filename])
+        deeplabcut.create_labeled_video(self.config_path, [self.filename])
 
     def get_csv_filename(self):
             directory = os.fsencode(self.getBasedir())
@@ -134,7 +134,7 @@ class LadderAnalysis:
         kmeans = KMeans(n_clusters = clusters)
         kmeans.fit(animal)
         final = []
-        if kmeans.labels_[0] == 1: #makes sure the labels of the clusters are the same each time, where 1 == present
+        if kmeans.labels_[0] == 1: #makes sure the labels of the clusters are the same each time, where 1 == mouse is  present
             for i in kmeans.labels_:
                 if i == 1:
                     final.append(0)
@@ -223,8 +223,10 @@ class LadderAnalysis:
         cv2.line(img, (0, int(c)), (int(w), int(w*m + c)), (0, 255, 0), 9)
         if x and y:
             plt.scatter(x, y, marker="o")
-        plt.figure(figsize = (20, 5))
-        plt.imshow(img)
+            plt.figure(figsize = (20, 5))
+            plt.imshow(img)
+        else:
+            plt.imshow(img)
 
     def clean_slices(self): #get rid of any runs that register as under 4 seconds in length
         slices = self.slices_and_runs()[0]
@@ -241,7 +243,7 @@ class LadderAnalysis:
                 new_slices.append(i)
         return new_slices
 
-    def instancesBelowRungs(self, limb="BackLeft", pcutoff=0.9, plot=False):
+    def instancesBelowRungs(self, limb="BackLeft", pcutoff=0.9, plot=None):
         if limb not in self.limbs:
             return "This isn't a feature... typo?"
         else:
@@ -259,10 +261,10 @@ class LadderAnalysis:
                     if new.iloc[i].astype("float")["{}_likelihood".format(limb)] > pcutoff:
                         y = new.iloc[i].astype('float')["{}_y".format(limb)]
                         x = new.iloc[i].astype('float')["{}_x".format(limb)]
-                        if y < m*x + c: #if the value of y falls below the rung line, then add to the list
-                            limb_x.append()
-                            limb_y.append()
-                if plot:
+                        if y > m*x + c: #if the value of y falls below the rung line, then add to the list
+                            limb_x.append(x)
+                            limb_y.append(y)
+                if plot == traversal:
                     self.plot_rungs(limb_x, limb_y)
                 results[traversal] = len(limb_x)
                 traversal += 1
