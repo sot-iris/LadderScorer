@@ -222,9 +222,9 @@ class LadderAnalysis:
         img = firstFrame[0][int(editedYAML['y1']):int(editedYAML['y2']), 0:int(w)]
         cv2.line(img, (0, int(c)), (int(w), int(w*m + c)), (0, 255, 0), 9)
         if x and y:
-            plt.scatter(x, y, marker="o")
             plt.figure(figsize = (20, 5))
             plt.imshow(img)
+            plt.scatter(x, y, marker="o")
         else:
             plt.imshow(img)
 
@@ -243,7 +243,7 @@ class LadderAnalysis:
                 new_slices.append(i)
         return new_slices
 
-    def instancesBelowRungs(self, limb="BackLeft", pcutoff=0.9, plot=None):
+    def instancesBelowRungs(self, limb="BackLeft", pcutoff=0.9, plot="All"):
         if limb not in self.limbs:
             return "This isn't a feature... typo?"
         else:
@@ -257,20 +257,22 @@ class LadderAnalysis:
             for run in range(int(len(slices) / 2)):
                 limb_x = []
                 limb_y = []
-                for i in range(slices[run_v], slices[run_v + 1]):
+                for i in range(slices[run_v], slices[run_v + 1]): #iterate through each run and return any coordinates that are below the rung lines with a pcutoff of greater than 0.9
                     if new.iloc[i].astype("float")["{}_likelihood".format(limb)] > pcutoff:
                         y = new.iloc[i].astype('float')["{}_y".format(limb)]
                         x = new.iloc[i].astype('float')["{}_x".format(limb)]
                         if y > m*x + c: #if the value of y falls below the rung line, then add to the list
                             limb_x.append(x)
                             limb_y.append(y)
-                if plot == traversal:
-                    self.plot_rungs(limb_x, limb_y)
+                if plot == "All":
+                    self.plot_rungs(limb_x, limb_y) #plot the coordinates on the first frame along with rung line
+                elif plot == traversal:
+                    print("Traversal: {}".format(traversal))
+                    self.plot_rungs(limb_x, limb_y) #plot the coordinates on the first frame along with rung line
                 results[traversal] = len(limb_x)
                 traversal += 1
                 run_v += 2
             return results
-
 
     def cumulativeError(self):
         pass
