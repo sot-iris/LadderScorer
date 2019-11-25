@@ -255,6 +255,7 @@ class LadderAnalysis:
             results = {}
             m, c = self.get_nose_line_equation()
             for run in range(int(len(slices) / 2)):
+                cumulativeError = 0
                 limb_x = []
                 limb_y = []
                 for i in range(slices[run_v], slices[run_v + 1]): #iterate through each run and return any coordinates that are below the rung lines with a pcutoff of greater than 0.9
@@ -264,15 +265,15 @@ class LadderAnalysis:
                         if y > m*x + c: #if the value of y falls below the rung line, then add to the list
                             limb_x.append(x)
                             limb_y.append(y)
+                            #calculate the distance between the limb and the line; add it to the cumulativeError
+                            error = y - (m*x) + c
+                            cumulativeError += error
                 if plot == "All":
                     self.plot_rungs(limb_x, limb_y) #plot the coordinates on the first frame along with rung line
                 elif plot == traversal:
                     print("Traversal: {}".format(traversal))
                     self.plot_rungs(limb_x, limb_y) #plot the coordinates on the first frame along with rung line
-                results[traversal] = len(limb_x)
+                results[traversal] = [len(limb_x), cummulativeError]
                 traversal += 1
                 run_v += 2
             return results
-
-    def cumulativeError(self):
-        pass
