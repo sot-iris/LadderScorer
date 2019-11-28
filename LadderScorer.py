@@ -209,7 +209,7 @@ class LadderAnalysis:
         m, b = self.best_fit_slope_and_intercept(np.array(fit_x), np.array(fit_y))
         return m, b
 
-    def plot_rungs(self, x=None, y=None):
+    def plot_rungs(self, x=None, y=None plotSlip=True):
         with open(self.config_path, 'r') as f:
             try:
                 editedYAML = yaml.load(f, Loader=yaml.FullLoader)
@@ -273,7 +273,7 @@ class LadderAnalysis:
                 elif plot == traversal:
                     print("Traversal: {}".format(traversal))
                     self.plot_rungs(limb_x, limb_y) #plot the coordinates on the first frame along with rung line
-                results[traversal] = [len(limb_x), cummulativeError]
+                results[traversal] = [len(limb_x), cumulativeError]
                 traversal += 1
                 run_v += 2
             return results
