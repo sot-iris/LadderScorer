@@ -209,7 +209,7 @@ class LadderAnalysis:
         m, b = self.best_fit_slope_and_intercept(np.array(fit_x), np.array(fit_y))
         return m, b
 
-    def plot_rungs(self, x=None, y=None plotSlip=True):
+    def plot_rungs(self, x=None, y=None, plotSlip=True):
         with open(self.config_path, 'r') as f:
             try:
                 editedYAML = yaml.load(f, Loader=yaml.FullLoader)
