@@ -17,8 +17,8 @@ try:
     import deeplabcut
 except ImportError:
     sp.call(['pip', 'install', 'deeplabcut'])
-    print("DeepLabCut (DLC) has been installed -- restart runtime to correctly load dependencies for DLC-Pose-Estimation, including the correct version of PyYaml")
-
+    print("DeepLabCut (DLC) has been installed -- restarting runtime automatically to correctly load dependencies for DLC-Pose-Estimation, including the correct version of PyYaml")
+    os.kill(os.getpid(), 9)
 
 class LadderAnalysis:
     def __init__(self, config_path=None, ID=None, full_vid_filename=None, snapshot=None, FPS=30, cropping=False, videofileType='.mp4'):
