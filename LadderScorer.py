@@ -283,7 +283,7 @@ class LadderAnalysis:
                             #calculate the distance between the limb and the line; add it to the cumulativeError
                             error = y - (m*x) + c
                             cumulativeError += error
-                meanShiftCluserting(bliX)
+                self.meanShiftCluserting(bliX)
                 if plot == "All":
                     self.plot_rungs(limb_x, limb_y, plotSlip=True, slipthresh=slipthresh_) #plot the coordinates on the first frame along with rung line
                 elif plot == traversal:
