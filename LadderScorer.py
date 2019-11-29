@@ -245,8 +245,8 @@ class LadderAnalysis:
                 new_slices.append(i)
         return new_slices
 
-    def meanShiftClustering(self, X):
-        ms = MeanShift()
+    def meanShiftClustering(self, X, slipthresh):
+        ms = MeanShift(bandwidth=slipthresh)
         ms.fit(np.array(X))
         labels = ms.labels_
         cluster_centers = ms.cluster_centers_
@@ -283,7 +283,7 @@ class LadderAnalysis:
                             #calculate the distance between the limb and the line; add it to the cumulativeError
                             error = y - (m*x) + c
                             cumulativeError += error
-                self.meanShiftClustering(bliX)
+                self.meanShiftClustering(bliX, slipthresh_)
                 if plot == "All":
                     self.plot_rungs(limb_x, limb_y, plotSlip=True, slipthresh=slipthresh_) #plot the coordinates on the first frame along with rung line
                 elif plot == traversal:
