@@ -245,7 +245,7 @@ class LadderAnalysis:
                 new_slices.append(i)
         return new_slices
 
-    def meanShiftCluserting(self, X):
+    def meanShiftClustering(self, X):
         ms = MeanShift()
         ms.fit(np.array(X))
         labels = ms.labels_
@@ -283,7 +283,7 @@ class LadderAnalysis:
                             #calculate the distance between the limb and the line; add it to the cumulativeError
                             error = y - (m*x) + c
                             cumulativeError += error
-                self.meanShiftCluserting(bliX)
+                self.meanShiftClustering(bliX)
                 if plot == "All":
                     self.plot_rungs(limb_x, limb_y, plotSlip=True, slipthresh=slipthresh_) #plot the coordinates on the first frame along with rung line
                 elif plot == traversal:
