@@ -270,7 +270,7 @@ class LadderAnalysis:
             m, c = self.get_nose_line_equation()
             slipthresh_ = self.bodylength()/8
             for run in range(int(len(slices) / 2)):
-                index = "{}_{}".format(run_number[run_v], animal_id)
+                index = "{}_{}".format(run_number[traversal-1], animal_id)
                 cumulativeError = 0
                 limb_x = []
                 limb_y = []
@@ -291,8 +291,16 @@ class LadderAnalysis:
                 elif plot == traversal:
                     print("Traversal: {}".format(traversal))
                     self.plot_rungs(limb_x, limb_y, plotSlip=True, slipthresh=slipthresh_) #plot the coordinates on the first frame along with rung line and slip threshold
-                results[index] = [len(limb_x), cumulativeError, self.meanShiftClustering(bliX, slipthresh_)]
+                if limb == "FrontLeft":
+                    results[index] = [len(limb_x), cumulativeError, self.meanShiftClustering(bliX, slipthresh_), 1, 0, 0, 0]
+                elif limb == "BackLeft":
+                    results[index] = [len(limb_x), cumulativeError, self.meanShiftClustering(bliX, slipthresh_), 0, 0, 1, 0]
+                elif limb == "FrontRight":
+                    results[index] = [len(limb_x), cumulativeError, self.meanShiftClustering(bliX, slipthresh_), 0, 1, 0, 0]
+                elif limb == "BackRight":
+                    results[index] = [len(limb_x), cumulativeError, self.meanShiftClustering(bliX, slipthresh_), 0, 0, 0, 1]
                 traversal += 1
                 run_v += 2
-            results = pd.DataFrame.from_dict(results, orient='index', columns=['Number of Instances', 'CumulativeError', 'Clusters'])
+            results = pd.DataFrame.from_dict(results, orient='index', columns=['NumberofInstances', 'CumulativeError', 'Clusters',
+            'front left', 'front right', 'back left', 'back right'])
             return results
