@@ -253,8 +253,11 @@ class LadderAnalysis:
         print(cluster_centers)
         n_clusters_ = len(np.unique(labels))
         print("Number of estimated clusters:", n_clusters_)
+        return n_clusters_
 
     def instancesBelowRungs(self, limb="BackLeft", pcutoff=0.99, plot="All"):
+        run_number = ["one", "two", "three", "four", "five", "six"]
+        animal_id = self.get_csv_filename().split("/")[-1][0:4]
         if limb not in self.limbs:
             return "This isn't a feature... typo?"
         else:
@@ -267,6 +270,7 @@ class LadderAnalysis:
             m, c = self.get_nose_line_equation()
             slipthresh_ = self.bodylength()/8
             for run in range(int(len(slices) / 2)):
+                index = "{}_{}".format(run_number[run_v], animal_id)
                 cumulativeError = 0
                 limb_x = []
                 limb_y = []
@@ -282,13 +286,13 @@ class LadderAnalysis:
                             #calculate the distance between the limb and the line; add it to the cumulativeError
                             error = y - (m*x) + c
                             cumulativeError += error
-                self.meanShiftClustering(bliX, slipthresh_)
                 if plot == "All":
                     self.plot_rungs(limb_x, limb_y, plotSlip=True, slipthresh=slipthresh_) #plot the coordinates on the first frame along with rung line
                 elif plot == traversal:
                     print("Traversal: {}".format(traversal))
                     self.plot_rungs(limb_x, limb_y, plotSlip=True, slipthresh=slipthresh_) #plot the coordinates on the first frame along with rung line and slip threshold
-                results[traversal] = [len(limb_x), cumulativeError]
+                results[index] = [len(limb_x), cumulativeError, self.meanShiftClustering(bliX, slipthresh_)]
                 traversal += 1
                 run_v += 2
+            results = pd.DataFrame.from_dict(results, orient='index', columns=['Number of Instances', 'CumulativeError', 'Clusters'])
             return results
