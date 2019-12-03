@@ -264,9 +264,9 @@ class LadderAnalysis:
         if limb not in self.limbs:
             return "This isn't a feature... typo?"
         else:
-            print("Results for {} limb.".format(limb))
+            #print("Results for {} limb.".format(limb))
             new = self.clean_data()
-            slices = self.slices_and_runs()[0]
+            slices = self.clean_slices()
             run_v = 0
             traversal = 1
             results = {}
@@ -292,7 +292,7 @@ class LadderAnalysis:
                 if plot == "All":
                     self.plot_rungs(limb_x, limb_y, plotSlip=True, slipthresh=slipthresh_) #plot the coordinates on the first frame along with rung line
                 elif plot == traversal:
-                    print("Traversal: {}".format(traversal))
+                    #print("Traversal: {}".format(traversal))
                     self.plot_rungs(limb_x, limb_y, plotSlip=True, slipthresh=slipthresh_) #plot the coordinates on the first frame along with rung line and slip threshold
                 if limb == "FrontLeft":
                     results[index] = [len(limb_x), cumulativeError, self.meanShiftClustering(bliX, slipthresh_), 1, 0, 0, 0]
