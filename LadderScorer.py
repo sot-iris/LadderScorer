@@ -246,14 +246,17 @@ class LadderAnalysis:
         return new_slices
 
     def meanShiftClustering(self, X, slipthresh):
-        ms = MeanShift(bandwidth=slipthresh*4)
-        ms.fit(np.array(X))
-        labels = ms.labels_
-        cluster_centers = ms.cluster_centers_
-        print(cluster_centers)
-        n_clusters_ = len(np.unique(labels))
-        print("Number of estimated clusters:", n_clusters_)
-        return n_clusters_
+        if len(X) > 0:
+            ms = MeanShift(bandwidth=slipthresh*4)
+            ms.fit(np.array(X))
+            labels = ms.labels_
+            cluster_centers = ms.cluster_centers_
+            print(cluster_centers)
+            n_clusters_ = len(np.unique(labels))
+            print("Number of estimated clusters:", n_clusters_)
+            return n_clusters_
+        else:
+            return 0
 
     def instancesBelowRungs(self, limb="BackLeft", pcutoff=0.99, plot="All"):
         run_number = ["one", "two", "three", "four", "five", "six"]
