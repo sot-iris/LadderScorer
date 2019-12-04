@@ -235,7 +235,7 @@ class LadderAnalysis:
         unit = 0
         for i in range(int(len(slices)/2)):
             length = int((slices[unit+1]-slices[unit])/50)
-            if length < 4:
+            if length < 8:
                 slices[unit] = "n"
                 slices[unit+1] = "n"
             unit += 2
