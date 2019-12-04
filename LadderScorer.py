@@ -230,12 +230,12 @@ class LadderAnalysis:
         else:
             plt.imshow(img)
 
-    def clean_slices(self): #get rid of any runs that register as under 4 seconds in length
+    def clean_slices(self, filter=4): #get rid of any runs that register as under 4 seconds in length
         slices = self.slices_and_runs()[0]
         unit = 0
         for i in range(int(len(slices)/2)):
             length = int((slices[unit+1]-slices[unit])/50)
-            if length < 8:
+            if length < filter:
                 slices[unit] = "n"
                 slices[unit+1] = "n"
             unit += 2
@@ -258,7 +258,7 @@ class LadderAnalysis:
         else:
             return 0
 
-    def instancesBelowRungs(self, limb="BackLeft", pcutoff=0.99, plot="All"):
+    def instancesBelowRungs(self, limb="BackLeft", pcutoff=0.99, plot="All", filter=6):
         run_number = ["one", "two", "three", "four", "five", "six"]
         animal_id = self.get_csv_filename().split("/")[-1][0:4]
         if limb not in self.limbs:
@@ -266,7 +266,7 @@ class LadderAnalysis:
         else:
             #print("Results for {} limb.".format(limb))
             new = self.clean_data()
-            slices = self.clean_slices()
+            slices = self.clean_slices(filter=filter)
             run_v = 0
             traversal = 1
             results = {}
