@@ -251,9 +251,9 @@ class LadderAnalysis:
             ms.fit(np.array(X))
             labels = ms.labels_
             cluster_centers = ms.cluster_centers_
-            print(cluster_centers)
+            #print(cluster_centers)
             n_clusters_ = len(np.unique(labels))
-            print("Number of estimated clusters:", n_clusters_)
+            #print("Number of estimated clusters:", n_clusters_)
             return n_clusters_
         else:
             return 0
