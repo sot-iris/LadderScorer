@@ -275,7 +275,7 @@ class LadderAnalysis:
                         if y > m*x + c + slipthresh_: #if the value of y falls below the rung line, then add to the list
                             bliX.append([x, y])
                 number_of, centres = self.meanShiftClustering(bliX, slipthresh_)
-                print("errors for {}: {}, and their centres: {}".format(limb, number_of, centres)
+                print("errors for {}: {}, and their centres: {}".format(limb, number_of, centres))
             traversal += 1
             run_v += 2
 
