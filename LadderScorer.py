@@ -258,7 +258,7 @@ class LadderAnalysis:
         else:
             return 0
 
-    def meanShiftClusteringOnly(self, slipthresh):
+    def meanShiftClusteringOnly(self):
         new = self.clean_data()
         slices = self.clean_slices(filter=filter)
         run_v = 0
