@@ -267,18 +267,15 @@ class LadderAnalysis:
         slipthresh_ = self.bodylength()/8
         for run in range(int(len(slices)/2)):
             for limb in limbs:
-                limb_x = []
-                limb_y = []
                 bliX = []
                 for i in range(slices[run_v], slices[run_v + 1]): #iterate through each run and return any coordinates that are below the rung lines with a pcutoff of greater than 0.9
                     if new.iloc[i].astype("float")["{}_likelihood".format(limb)] > pcutoff:
                         y = new.iloc[i].astype('float')["{}_y".format(limb)]
                         x = new.iloc[i].astype('float')["{}_x".format(limb)]
                         if y > m*x + c + slipthresh_: #if the value of y falls below the rung line, then add to the list
-                            limb_x.append(x)
-                            limb_y.append(y)
                             bliX.append([x, y])
-
+                number_of, centres = self.meanShiftClustering(bliX, slipthresh_)
+                print("errors for {}: {}, and their centres: {}".format(limb, number_of, centres)
             traversal += 1
             run_v += 2
 
