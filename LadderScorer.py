@@ -95,13 +95,13 @@ class LadderAnalysis:
         deeplabcut.create_labeled_video(self.config_path, [self.filename])
 
     def get_csv_filename(self):
-            directory = os.fsencode(self.getBasedir())
-            for file_ in os.listdir(directory):
-                filename_ = os.fsdecode(file_)
-                if filename_.endswith(".csv"):
-                    if self.filename.split(".mp4")[0].split(r"/")[-1] in filename_:
-                        return "{}{}".format(self.getBasedir(), filename_)
-            return "No CSV for this video; try running analyseVideo()."
+        directory = os.fsencode(self.getBasedir())
+        for file_ in os.listdir(directory):
+            filename_ = os.fsdecode(file_)
+            if filename_.endswith(".csv"):
+                if self.filename.lower().split(".mp4")[0].split(r"/")[-1] in filename_.lower():
+                    return "{}{}".format(self.getBasedir(), filename_)
+        return "No CSV for this video; try running analyseVideo()."
 
     def clean_data(self):
         file = self.get_csv_filename()
