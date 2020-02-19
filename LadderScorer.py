@@ -29,7 +29,7 @@ class LadderAnalysis:
         self.FPS = FPS
         self.cropping = cropping
         self.videoType = videofileType
-        self.limbs = ['FrontLeft', 'BackLeft', 'FrontRight', 'BackRight']
+        self.limbs = ['LeftFront', 'LeftBack', 'RightFront', 'RightBack']
 
     def getFeatures(self):
         bodypartsList = []
@@ -85,7 +85,6 @@ class LadderAnalysis:
                 editedYAML = yaml.load(f, Loader=yaml.FullLoader)
             except yaml.YAMLError as exc:
                 print(exc)
-        editedYAML['iteration'] = 2
         if croppingParams:
             x1, x2, y1, y2 = croppingParams
             editedYAML['cropping'] = True
@@ -220,7 +219,8 @@ class LadderAnalysis:
         m, b = self.best_fit_slope_and_intercept(np.array(fit_x), np.array(fit_y))
         return m, b
 
-    def plot_rungs(self, x=None, y=None, plotSlip=True, slipthresh=1):
+    def plot_rungs(self, x=None, y=None, plotSlip=True):
+        slipthresh = self.bodylength() / 4
         with open(self.config_path, 'r') as f:
             try:
                 editedYAML = yaml.load(f, Loader=yaml.FullLoader)
@@ -275,7 +275,7 @@ class LadderAnalysis:
         run_v = 0
         traversal = 1
         m, c = self.get_nose_line_equation()
-        slipthresh_ = self.bodylength()/8
+        slipthresh_ = self.bodylength()/4
         for run in range(int(len(slices)/2)):
             for limb in limbs:
                 bliX = []
