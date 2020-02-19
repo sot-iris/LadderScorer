@@ -280,9 +280,10 @@ class LadderAnalysis:
             for limb in self.limbs:
                 bliX = []
                 for i in range(slices[run_v], slices[run_v + 1]): #iterate through each run and return any coordinates that are below the rung lines with a pcutoff of greater than 0.9
+                    print(i)
                     if new.iloc[i].astype("float")["{}_likelihood".format(limb)] > pcutoff:
                         y = new.iloc[i].astype('float')["{}_y".format(limb)]
-                        x = new.iloc[i].astype('float')["{}_x".format(limb)]
+                        x = i#new.iloc[i].astype('float')["{}_x".format(limb)]
                         if y > m*x + c + slipthresh_: #if the value of y falls below the rung line, then add to the list
                             bliX.append([x, y])
                 if self.meanShiftClustering(bliX, slipthresh_) == 0:
@@ -292,50 +293,3 @@ class LadderAnalysis:
                     print("errors for {}: {}, and their centres: {}".format(limb, number_of, centres))
             traversal += 1
             run_v += 2
-
-    def instancesBelowRungs(self, limb="BackLeft", pcutoff=0.99, plot="All", filter=6):
-        run_number = ["one", "two", "three", "four", "five", "six"]
-        animal_id = self.get_csv_filename().split("/")[-1][0:4]
-        if limb not in self.limbs:
-            return "This isn't a feature... typo?"
-        else:
-            #print("Results for {} limb.".format(limb))
-            new = self.clean_data()
-            slices = self.clean_slices(filter=filter)
-            run_v = 0
-            traversal = 1
-            results = {}
-            m, c = self.get_nose_line_equation()
-            slipthresh_ = self.bodylength()/8
-            for run in range(int(len(slices) / 2)):
-                index = "{}_{}".format(run_number[traversal-1], animal_id)
-                cumulativeError = 0
-                limb_x = []
-                limb_y = []
-                bliX = []
-                for i in range(slices[run_v], slices[run_v + 1]): #iterate through each run and return any coordinates that are below the rung lines with a pcutoff of greater than 0.9
-                    if new.iloc[i].astype("float")["{}_likelihood".format(limb)] > pcutoff:
-                        y = new.iloc[i].astype('float')["{}_y".format(limb)]
-                        x = new.iloc[i].astype('float')["{}_x".format(limb)]
-                        if y > m*x + c + slipthresh_: #if the value of y falls below the rung line, then add to the list
-                            limb_x.append(x)
-                            limb_y.append(y)
-                            bliX.append([x, y])
-                if plot == "All":
-                    self.plot_rungs(limb_x, limb_y, plotSlip=True, slipthresh=slipthresh_) #plot the coordinates on the first frame along with rung line
-                elif plot == traversal:
-                    #print("Traversal: {}".format(traversal))
-                    self.plot_rungs(limb_x, limb_y, plotSlip=True, slipthresh=slipthresh_) #plot the coordinates on the first frame along with rung line and slip threshold
-                if limb == "FrontLeft":
-                    results[index] = [self.meanShiftClustering(bliX, slipthresh_)[0], 1, 0, 0, 0]
-                elif limb == "FrontRight":
-                    results[index] = [self.meanShiftClustering(bliX, slipthresh_)[0], 0, 1, 0, 0]
-                elif limb == "BackLeft":
-                    results[index] = [self.meanShiftClustering(bliX, slipthresh_)[0], 0, 0, 1, 0]
-                elif limb == "BackRight":
-                    results[index] = [self.meanShiftClustering(bliX, slipthresh_)[0], 0, 0, 0, 1]
-                traversal += 1
-                run_v += 2
-            results = pd.DataFrame.from_dict(results, orient='index', columns=['Clusters',
-            'front left', 'front right', 'back left', 'back right'])
-            return results
