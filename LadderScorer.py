@@ -40,6 +40,9 @@ class LadderAnalysis:
                     bodypartsList.append(i)
         return bodypartsList
 
+    def getLimbNames(self):
+        pass
+
     def video_shape(self):
         video_file = self.filename
         cap = cv2.VideoCapture(video_file)
@@ -154,9 +157,9 @@ class LadderAnalysis:
 
     def bodylength(self):
         cleaned = self.clean_data()
-        cleaned = cleaned[['TailBase_likelihood','Nose_likelihood', 'TailBase_x','TailBase_y' , 'Nose_x','Nose_y']].copy()
-        bodyLength = cleaned[(cleaned['TailBase_likelihood'].astype("float") > 0.99) & (cleaned['Nose_likelihood'].astype("float") > 0.99)]
-        bodyLength["BodyLengthSquared"] = np.square(bodyLength["TailBase_x"].astype("float") - bodyLength["Nose_x"].astype("float")) + np.square(bodyLength["TailBase_y"].astype("float") - bodyLength["Nose_y"].astype("float"))
+        cleaned = cleaned[['TailBase_likelihood','Snout_likelihood', 'TailBase_x','TailBase_y' , 'Snout_x','Snout_y']].copy()
+        bodyLength = cleaned[(cleaned['TailBase_likelihood'].astype("float") > 0.99) & (cleaned['Snout_likelihood'].astype("float") > 0.99)]
+        bodyLength["BodyLengthSquared"] = np.square(bodyLength["TailBase_x"].astype("float") - bodyLength["Snout_x"].astype("float")) + np.square(bodyLength["TailBase_y"].astype("float") - bodyLength["Snout_y"].astype("float"))
         bodyLength["BodyLength"] = np.sqrt(bodyLength["BodyLengthSquared"])
         avg_bodyLength = np.mean(bodyLength["BodyLength"])
         return avg_bodyLength
@@ -210,9 +213,9 @@ class LadderAnalysis:
         run_v = 0
         for run in range(int(len(slices) / 2)):
             for i in range(slices[run_v], slices[run_v + 1]):
-                if new.iloc[i].astype("float").Nose_likelihood > 0.9:
-                    fit_x.append(new.iloc[i].astype('float').Nose_x)
-                    fit_y.append(new.iloc[i].astype('float').Nose_y)
+                if new.iloc[i].astype("float").Snout_likelihood > 0.9:
+                    fit_x.append(new.iloc[i].astype('float').Snout_x)
+                    fit_y.append(new.iloc[i].astype('float').Snout_y)
             run_v += 2
         m, b = self.best_fit_slope_and_intercept(np.array(fit_x), np.array(fit_y))
         return m, b
