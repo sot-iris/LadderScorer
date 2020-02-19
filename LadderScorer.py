@@ -21,7 +21,7 @@ except ImportError:
     os.kill(os.getpid(), 9)
 
 class LadderAnalysis:
-    def __init__(self, config_path=None, ID=None, full_vid_filename=None, snapshot=None, FPS=30, cropping=False, videofileType='.mp4'):
+    def __init__(self, config_path=None, ID=None, full_vid_filename=None, snapshot=None, FPS=200, cropping=False, videofileType='.mp4'):
         self.config_path = config_path
         self.ID = ID
         self.filename = full_vid_filename
@@ -29,8 +29,15 @@ class LadderAnalysis:
         self.FPS = FPS
         self.cropping = cropping
         self.videoType = videofileType
-        self.features = ["Nose_likelihood", "TailBase_likelihood", "BackLeft_likelihood", "FrontLeft_likelihood", "FrontRight_likelihood", "BackRight_likelihood"]
         self.limbs = ['FrontLeft', 'BackLeft', 'FrontRight', 'BackRight']
+
+    def getFeatures(self):
+        bodypartsList = []
+        for i in csv.iloc[0]:
+            if i != "bodyparts":
+                if i not in bodypartsList:
+                    bodypartsList.append(i)
+        return bodypartsList
 
     def video_shape(self):
         video_file = self.filename
@@ -126,8 +133,8 @@ class LadderAnalysis:
     def get_animal_presence(self): #performs k-means clustering on the likelihood scores of all of the features and puts them in two clusters
         new = self.clean_data()
         series_list = []
-        for i in self.features:
-            ser = new[i].astype("float").rolling(window=100, min_periods=1).mean()
+        for i in self.getFeatures():
+            ser = new[f'{i}_likelihood'].astype("float").rolling(window=100, min_periods=1).mean()
             series_list.append(ser)
         animal = pd.concat(series_list, axis=1)
         clusters = 2
