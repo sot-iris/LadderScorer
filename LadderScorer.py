@@ -269,9 +269,9 @@ class LadderAnalysis:
         else:
             return 0
 
-    def meanShiftClusteringOnly(self):
+    def meanShiftClusteringOnly(self, filter_runs, pcutoff):
         new = self.clean_data()
-        slices = self.clean_slices(filter=filter)
+        slices = self.clean_slices(filter=filter_runs)
         run_v = 0
         traversal = 1
         m, c = self.get_nose_line_equation()
