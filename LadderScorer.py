@@ -33,6 +33,7 @@ class LadderAnalysis:
 
     def getFeatures(self):
         bodypartsList = []
+        csv = pd.read_csv(self.get_csv_filename())
         for i in csv.iloc[0]:
             if i != "bodyparts":
                 if i not in bodypartsList:
