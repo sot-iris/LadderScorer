@@ -277,7 +277,7 @@ class LadderAnalysis:
         m, c = self.get_nose_line_equation()
         slipthresh_ = self.bodylength()/4
         for run in range(int(len(slices)/2)):
-            for limb in limbs:
+            for limb in self.limbs:
                 bliX = []
                 for i in range(slices[run_v], slices[run_v + 1]): #iterate through each run and return any coordinates that are below the rung lines with a pcutoff of greater than 0.9
                     if new.iloc[i].astype("float")["{}_likelihood".format(limb)] > pcutoff:
