@@ -232,8 +232,8 @@ class LadderAnalysis:
         #y = mx + c
         img = firstFrame[0][int(editedYAML['y1']):int(editedYAML['y2']), 0:int(w)]
         cv2.line(img, (0, int(c)), (int(w), int(w*m + c)), (0, 255, 0), 9)
-        if plotSlip:
-            cv2.line(img, (0, int(c+slipthresh)), (int(w), int(w*m + c+ slipthresh)), (255, 0, 0), 9)
+        #if plotSlip:
+        #    cv2.line(img, (0, int(c+slipthresh)), (int(w), int(w*m + c+ slipthresh)), (255, 0, 0), 9)
         if x and y:
             plt.figure(figsize = (20, 5))
             plt.imshow(img)
