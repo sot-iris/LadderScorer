@@ -205,7 +205,7 @@ class LadderAnalysis:
         b = mean(ys) - m * mean(xs)
         return m, b
 
-    def plot_features_over_time(self, feature=None, runNum=None):
+    def plot_features_over_time(self, feature=None, runNum="All"):
         new = self.clean_data()
         slices = self.slices_and_runs()[0]
         run_v = 0
@@ -219,7 +219,10 @@ class LadderAnalysis:
             run_v += 2
             if runNum==run:
                 plt.figure(figsize = (20, 5))
-                plt.scatter(fit_x, fit_y, marker="o")
+                plt.scatter(fit_x, fit_y, marker="o").invert_yaxis()
+            elif runNum == "All":
+                plt.figure(figsize = (20, 5))
+                plt.scatter(fit_x, fit_y, marker="o").invert_yaxis()
 
 
     def get_line_equation(self, feature="Snout"): #get the gradient and y intercept of the mouse's nose whereabouts
