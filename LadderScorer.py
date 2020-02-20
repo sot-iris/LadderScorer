@@ -208,17 +208,17 @@ class LadderAnalysis:
     def plot_features_over_time(self, feature=None, runNum=None):
         new = self.clean_data()
         slices = self.slices_and_runs()[0]
-        fit_x = []
-        fit_y = []
         run_v = 0
         for run in range(int(len(slices) / 2)):
+            fit_x = []
+            fit_y = []
             for i in range(slices[run_v], slices[run_v + 1]):
                 if new.iloc[i].astype("float")[f'{feature}_likelihood'] > 0.9:
                     fit_x.append(i)
                     fit_y.append(new.iloc[i].astype('float')[f'{feature}_y'])
             run_v += 2
-            plt.figure(figsize = (20, 5))
             if runNum==run:
+                plt.figure(figsize = (20, 5))
                 plt.scatter(fit_x, fit_y, marker="o")
 
 
