@@ -204,7 +204,7 @@ class LadderAnalysis:
         b = mean(ys) - m * mean(xs)
         return m, b
 
-    def get_nose_line_equation(self): #get the gradient and y intercept of the mouse's nose whereabouts
+    def get_line_equation(self, feature="Snout"): #get the gradient and y intercept of the mouse's nose whereabouts
         new = self.clean_data()
         slices = self.slices_and_runs()[0]
         fit_x = []
@@ -212,14 +212,14 @@ class LadderAnalysis:
         run_v = 0
         for run in range(int(len(slices) / 2)):
             for i in range(slices[run_v], slices[run_v + 1]):
-                if new.iloc[i].astype("float").Snout_likelihood > 0.9:
-                    fit_x.append(new.iloc[i].astype('float').Snout_x)
-                    fit_y.append(new.iloc[i].astype('float').Snout_y)
+                if new.iloc[i].astype("float")[f'{feature}_likelihood'] > 0.9:
+                    fit_x.append(new.iloc[i].astype('float').[f'{feature}_x'])
+                    fit_y.append(new.iloc[i].astype('float').[f'{feature}_y'])
             run_v += 2
         m, b = self.best_fit_slope_and_intercept(np.array(fit_x), np.array(fit_y))
         return m, b
 
-    def plot_rungs(self, x=None, y=None, plotSlip=True):
+    def plot_rungs(self, x=None, y=None, plotFeature="Snout"):
         slipthresh = self.bodylength() / 4
         with open(self.config_path, 'r') as f:
             try:
@@ -228,7 +228,7 @@ class LadderAnalysis:
                 print(exc)
         firstFrame = self.get_first_frame()
         h, w = self.video_shape()[1:]
-        m, c = self.get_nose_line_equation()
+        m, c = self.get_line_equation(feature=plotFeature)
         #y = mx + c
         img = firstFrame[0][int(editedYAML['y1']):int(editedYAML['y2']), 0:int(w)]
         cv2.line(img, (0, int(c)), (int(w), int(w*m + c)), (0, 255, 0), 9)
@@ -274,10 +274,10 @@ class LadderAnalysis:
         slices = self.clean_slices(filter=filter_runs)
         run_v = 0
         traversal = 1
-        m, c = self.get_nose_line_equation()
         slipthresh_ = self.bodylength()/4
         for run in range(int(len(slices)/2)):
             for limb in self.limbs:
+                m, c = self.get_line_equation(feature=limb)
                 bliX = []
                 for i in range(slices[run_v], slices[run_v + 1]): #iterate through each run and return any coordinates that are below the rung lines with a pcutoff of greater than 0.9
                     print(i)
@@ -293,3 +293,8 @@ class LadderAnalysis:
                     print("errors for {}: {}, and their centres: {}".format(limb, number_of, centres))
             traversal += 1
             run_v += 2
+
+    def plotErrorstoVideo(self):
+        cap = cv2.VideoCapture(self.filename)
+        while True:
+            ret, frame = cap.read()
