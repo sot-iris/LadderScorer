@@ -217,10 +217,9 @@ class LadderAnalysis:
                     fit_x.append(i)
                     fit_y.append(new.iloc[i].astype('float')[f'{feature}_y'])
             run_v += 2
-            if runNum == run:
-                plt.scatter(fit_x, fit_y, marker="o")
-            else:
-                plt.scatter(fit_x, fit_y, marker="o")
+            plt.figure(figsize = (20, 5))
+            plt.scatter(fit_x, fit_y, marker="o")
+
 
     def get_line_equation(self, feature="Snout"): #get the gradient and y intercept of the mouse's nose whereabouts
         new = self.clean_data()
