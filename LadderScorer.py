@@ -214,7 +214,7 @@ class LadderAnalysis:
             for i in range(slices[run_v], slices[run_v + 1]):
                 if new.iloc[i].astype("float")[f'{feature}_likelihood'] > 0.9:
                     fit_x.append(i)
-                    fit_y.append(new.iloc[i].astype('float').[f'{feature}_y'])
+                    fit_y.append(new.iloc[i].astype('float')[f'{feature}_y'])
             run_v += 2
         m, b = self.best_fit_slope_and_intercept(np.array(fit_x), np.array(fit_y))
         return m, b
