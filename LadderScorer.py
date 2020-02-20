@@ -6,6 +6,7 @@ import os
 import yaml
 import cv2
 import os
+
 import numpy as np
 import pandas as pd
 import subprocess as sp
@@ -17,7 +18,9 @@ try:
     import deeplabcut
 except ImportError:
     sp.call(['pip', 'install', 'deeplabcut'])
-    print("DeepLabCut (DLC) has been installed -- restarting runtime automatically to correctly load dependencies for DLC-Pose-Estimation, including the correct version of PyYaml")
+    print("""DeepLabCut (DLC) has been installed -- restarting runtime
+    automatically to correctly load dependencies for DLC-Pose-Estimation,
+    including the correct version of PyYaml""")
     os.kill(os.getpid(), 9)
 
 class LadderAnalysis:
@@ -39,9 +42,6 @@ class LadderAnalysis:
                 if i not in bodypartsList:
                     bodypartsList.append(i)
         return bodypartsList
-
-    def getLimbNames(self):
-        pass
 
     def video_shape(self):
         video_file = self.filename
@@ -137,7 +137,8 @@ class LadderAnalysis:
         new = self.clean_data()
         series_list = []
         for i in self.getFeatures():
-            ser = new[f'{i}_likelihood'].astype("float").rolling(window=100, min_periods=1).mean()
+            ser = new[f'{i}_likelihood'].astype("float").rolling(window=100,
+                                                        min_periods=1).mean()
             series_list.append(ser)
         animal = pd.concat(series_list, axis=1)
         clusters = 2
@@ -203,6 +204,23 @@ class LadderAnalysis:
 
         b = mean(ys) - m * mean(xs)
         return m, b
+
+    def plot_features_over_time(self, feature=None, runNum=None):
+        new = self.clean_data()
+        slices = self.slices_and_runs()[0]
+        fit_x = []
+        fit_y = []
+        run_v = 0
+        for run in range(int(len(slices) / 2)):
+            for i in range(slices[run_v], slices[run_v + 1]):
+                if new.iloc[i].astype("float")[f'{feature}_likelihood'] > 0.9:
+                    fit_x.append(i)
+                    fit_y.append(new.iloc[i].astype('float')[f'{feature}_y'])
+            run_v += 2
+            if runNum == run:
+                plt.scatter(fit_x, fit_y, marker="o")
+            else:
+                plt.scatter(fit_x, fit_y, marker="o")
 
     def get_line_equation(self, feature="Snout"): #get the gradient and y intercept of the mouse's nose whereabouts
         new = self.clean_data()
