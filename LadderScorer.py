@@ -219,10 +219,12 @@ class LadderAnalysis:
             run_v += 2
             if runNum==run:
                 plt.figure(figsize = (20, 5))
-                plt.scatter(fit_x, fit_y, marker="o").invert_yaxis()
+                plt.gca().invert_yaxis()
+                plt.scatter(fit_x, fit_y, marker="o")
             elif runNum == "All":
                 plt.figure(figsize = (20, 5))
-                plt.scatter(fit_x, fit_y, marker="o").invert_yaxis()
+                plt.gca().invert_yaxis()
+                plt.scatter(fit_x, fit_y, marker="o")
 
 
     def get_line_equation(self, feature="Snout"): #get the gradient and y intercept of the mouse's nose whereabouts
