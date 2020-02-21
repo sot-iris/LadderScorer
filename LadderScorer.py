@@ -223,11 +223,11 @@ class LadderAnalysis:
             f = interp1d(fit_x, fit_y, kind='cubic')
 
             if runNum==run:
-                plt.figure(figsize = (40, 5))
+                plt.figure(figsize = (20, 5))
                 plt.gca().invert_yaxis()
                 plt.scatter(fit_x, fit_y, "o")#, xnew, f(xnew), "-")
             elif runNum == "All":
-                plt.figure(figsize = (40, 5))
+                plt.figure(figsize = (20, 5))
                 plt.gca().invert_yaxis()
                 plt.scatter(fit_x, fit_y, "o")#, xnew, f(xnew), "-")
 
