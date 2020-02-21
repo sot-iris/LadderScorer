@@ -219,17 +219,17 @@ class LadderAnalysis:
                     fit_x.append(i)
                     fit_y.append(new.iloc[i].astype('float')[f'{feature}_y'])
 
-            #xnew = np.arange(min(fit_x), max(fit_x), 1)
-            #f = interp1d(fit_x, fit_y, kind='cubic')
+            xnew = np.arange(min(fit_x), max(fit_x), 1)
+            f = interp1d(fit_x, fit_y, kind='cubic')
 
             if runNum==run:
                 plt.figure(figsize = (20, 5))
                 plt.gca().invert_yaxis()
-                plt.scatter(fit_x, fit_y, marker="o")#, xnew, f(xnew), "-")
+                plt.scatter(xnew, f(xnew), marker="o")#, xnew, f(xnew), "-")
             elif runNum == "All":
                 plt.figure(figsize = (20, 5))
                 plt.gca().invert_yaxis()
-                plt.scatter(fit_x, fit_y, marker="o")#, xnew, f(xnew), "-")
+                plt.scatter(xnew, f(xnew), marker="o")#, xnew, f(xnew), "-")
 
             run_v += 2
 
