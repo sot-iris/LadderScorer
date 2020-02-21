@@ -1,6 +1,7 @@
 from collections import deque
 from statistics import mean
 from sklearn.cluster import KMeans, MeanShift
+from scipy.interpolate import interp1d
 
 import os
 import yaml
@@ -212,20 +213,26 @@ class LadderAnalysis:
         for run in range(int(len(slices) / 2)):
             fit_x = []
             fit_y = []
+
             for i in range(slices[run_v], slices[run_v + 1]):
                 if new.iloc[i].astype("float")[f'{feature}_likelihood'] > 0.9:
                     fit_x.append(i)
                     fit_y.append(new.iloc[i].astype('float')[f'{feature}_y'])
-            run_v += 2
-            if runNum==run:
-                plt.figure(figsize = (20, 5))
-                plt.gca().invert_yaxis()
-                plt.scatter(fit_x, fit_y, marker="o")
-            elif runNum == "All":
-                plt.figure(figsize = (20, 5))
-                plt.gca().invert_yaxis()
-                plt.scatter(fit_x, fit_y, marker="o")
 
+            xnew = np.arange(slices[run_v], slices[run_v + 1], 1)
+            f = interp1d(fit_x, fit_y)
+            ynew = f(xnew)
+
+            if runNum==run:
+                plt.figure(figsize = (40, 5))
+                plt.gca().invert_yaxis()
+                plt.scatter(fit_x, fit_y, marker="o", xnew, ynew, marker="-")
+            elif runNum == "All":
+                plt.figure(figsize = (40, 5))
+                plt.gca().invert_yaxis()
+                plt.scatter(fit_x, fit_y, marker="o", xnew, ynew, marker="-")
+
+            run_v += 2
 
     def get_line_equation(self, feature="Snout"): #get the gradient and y intercept of the mouse's nose whereabouts
         new = self.clean_data()
