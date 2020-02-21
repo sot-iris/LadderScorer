@@ -220,12 +220,14 @@ class LadderAnalysis:
                     fit_y.append(new.iloc[i].astype('float')[f'{feature}_y'])
 
             if runNum==run:
-                plt.figure(figsize = (40, 5))
-                plt.gca().invert_yaxis()
+                pass
+                #plt.figure(figsize = (40, 5))
+                #plt.gca().invert_yaxis()
                 #plt.scatter(fit_x, fit_y, "o", xnew, ynew, "-")
             elif runNum == "All":
-                plt.figure(figsize = (40, 5))
-                plt.gca().invert_yaxis()
+                pass
+                #plt.figure(figsize = (40, 5))
+                #plt.gca().invert_yaxis()
                 #plt.scatter(fit_x, fit_y, "o", xnew, ynew, "-")
 
             run_v += 2
