@@ -221,15 +221,15 @@ class LadderAnalysis:
 
             xnew = np.arange(min(fit_x), max(fit_x), 1)
             f = interp1d(fit_x, fit_y, kind='cubic')
-            
+
             if runNum==run:
                 plt.figure(figsize = (40, 5))
                 plt.gca().invert_yaxis()
-                plt.scatter(fit_x, fit_y, "o", xnew, f(xnew), "-")
+                plt.scatter(fit_x, fit_y, "o")#, xnew, f(xnew), "-")
             elif runNum == "All":
                 plt.figure(figsize = (40, 5))
                 plt.gca().invert_yaxis()
-                plt.scatter(fit_x, fit_y, "o", xnew, f(xnew), "-")
+                plt.scatter(fit_x, fit_y, "o")#, xnew, f(xnew), "-")
 
             run_v += 2
 
@@ -309,7 +309,6 @@ class LadderAnalysis:
                 m, c = self.get_line_equation(feature=limb)
                 bliX = []
                 for i in range(slices[run_v], slices[run_v + 1]): #iterate through each run and return any coordinates that are below the rung lines with a pcutoff of greater than 0.9
-                    print(i)
                     if new.iloc[i].astype("float")["{}_likelihood".format(limb)] > pcutoff:
                         y = new.iloc[i].astype('float')["{}_y".format(limb)]
                         x = i#new.iloc[i].astype('float')["{}_x".format(limb)]
