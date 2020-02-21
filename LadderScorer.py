@@ -226,11 +226,11 @@ class LadderAnalysis:
             if runNum==run:
                 plt.figure(figsize = (40, 5))
                 plt.gca().invert_yaxis()
-                plt.scatter(fit_x, fit_y, marker="o", xnew, ynew, marker="-")
+                plt.scatter(fit_x, fit_y, "o", xnew, ynew, "-")
             elif runNum == "All":
                 plt.figure(figsize = (40, 5))
                 plt.gca().invert_yaxis()
-                plt.scatter(fit_x, fit_y, marker="o", xnew, ynew, marker="-")
+                plt.scatter(fit_x, fit_y, "o", xnew, ynew, "-")
 
             run_v += 2
 
