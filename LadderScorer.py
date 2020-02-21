@@ -219,7 +219,7 @@ class LadderAnalysis:
                     fit_x.append(i)
                     fit_y.append(new.iloc[i].astype('float')[f'{feature}_y'])
 
-            xnew = np.arange(slices[run_v], slices[run_v + 1], 1)
+            xnew = np.arange(min(fit_x), max(fit_x), 1)
             f = interp1d(fit_x, fit_y)
             ynew = f(xnew)
 
