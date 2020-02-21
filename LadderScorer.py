@@ -219,12 +219,6 @@ class LadderAnalysis:
                     fit_x.append(i)
                     fit_y.append(new.iloc[i].astype('float')[f'{feature}_y'])
 
-            #xnew = np.arange(min(fit_x), max(fit_x), 1)
-            #print(f'xnew  = {min(xnew)}')
-            #print(f'fit_x  = {min(fit_x)}')
-            #f = interp1d(fit_x, fit_y)
-            #ynew = f(xnew)
-
             if runNum==run:
                 plt.figure(figsize = (40, 5))
                 plt.gca().invert_yaxis()
