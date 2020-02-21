@@ -222,17 +222,17 @@ class LadderAnalysis:
             xnew = np.arange(min(fit_x), max(fit_x), 1)
             print(f'xnew  = {min(xnew)}')
             print(f'fit_x  = {min(fit_x)}')
-            f = interp1d(fit_x, fit_y)
-            ynew = f(xnew)
+            #f = interp1d(fit_x, fit_y)
+            #ynew = f(xnew)
 
             if runNum==run:
                 plt.figure(figsize = (40, 5))
                 plt.gca().invert_yaxis()
-                plt.scatter(fit_x, fit_y, "o", xnew, ynew, "-")
+                #plt.scatter(fit_x, fit_y, "o", xnew, ynew, "-")
             elif runNum == "All":
                 plt.figure(figsize = (40, 5))
                 plt.gca().invert_yaxis()
-                plt.scatter(fit_x, fit_y, "o", xnew, ynew, "-")
+                #plt.scatter(fit_x, fit_y, "o", xnew, ynew, "-")
 
             run_v += 2
 
