@@ -2,6 +2,7 @@ from collections import deque
 from statistics import mean
 from sklearn.cluster import KMeans, MeanShift
 from scipy.interpolate import interp1d
+from scipy.signal import find_peaks
 
 import os
 import yaml
@@ -225,11 +226,11 @@ class LadderAnalysis:
             if runNum==run:
                 plt.figure(figsize = (20, 5))
                 plt.gca().invert_yaxis()
-                plt.scatter(xnew, f(xnew), marker="o")#, xnew, f(xnew), "-")
+                plt.scatter(fit_x, fit_y, marker="o")#, xnew, f(xnew), "-")
             elif runNum == "All":
                 plt.figure(figsize = (20, 5))
                 plt.gca().invert_yaxis()
-                plt.scatter(xnew, f(xnew), marker="o")#, xnew, f(xnew), "-")
+                plt.scatter(fit_x, fit_y, marker="o")#, xnew, f(xnew), "-")
 
             run_v += 2
 
